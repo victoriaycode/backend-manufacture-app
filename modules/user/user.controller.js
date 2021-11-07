@@ -17,24 +17,61 @@
         function (req, res) {
             res.status(200).json(req.response);
         });
-
-    router.get('/:UserId',
+        
+    
+    router.get('/:id',
         UserMiddleware.getUserById,
         function (req, res) {
             res.status(200).json(req.response);
         });
 
-    router.put('/:UserId',
+    router.get('/n/:userName',
+        UserMiddleware.getUserByName,
+        function (req, res) {
+            res.status(200).json(req.response);
+        });
+        
+    router.get('/e/:userEmail',
+        UserMiddleware.getUserByEmail,
+        function (req, res) {
+            res.status(200).json(req.response);
+        });
+    router.get('/r/:userRole',
+        UserMiddleware.getUserByRole,
+        function (req, res) {
+            res.status(200).json(req.response);
+        });
+
+    router.get('/s/:userState',
+        UserMiddleware.getUserByState,
+        function (req, res) {
+            res.status(200).json(req.response);
+        });
+
+   
+    router.patch('/upd/:userId',
         UserMiddleware.modifyUser,
         function (req, res) {
             res.status(200).json(req.response);
         });
-    
-    router.delete('/:userId',
+
+    router.delete('/:id',
         UserMiddleware.removeUser,
         function (req, res) {
             res.status(200).json(req.response);
         });
+
+
+        const genercCallback = (res) => (err, result) => {
+            if (err) {
+              res.status(500).send('Error consultando los usuarios');
+            } else {
+              res.json(result);
+            }
+          };
+          
+     
+
     module.exports = router;
 
 })();

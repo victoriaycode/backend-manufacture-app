@@ -1,3 +1,5 @@
+
+
 (function () {
     'use strict';
 
@@ -5,8 +7,13 @@
         createUser: createUser,
         fetchUsers: fetchUsers,
         fetchUserById: fetchUserById,
+        fetchUserByName: fetchUserByName,
+        fetchUserByEmail: fetchUserByEmail,
+        fetchUserByRole: fetchUserByRole,
+        fetchUserByState: fetchUserByState,
         updateUser: updateUser,
         deleteUser: deleteUser
+       
     };
 
     var UserModel = require('./user.module')().UserModel;
@@ -21,20 +28,52 @@
     }
 
     function fetchUserById(userId) {
-        return UserModel.findById(userId)
+        return UserModel.findById({_id:userId})
             .exec();
     }
 
-    function updateUser(userId, user) {
-        return UserModel
-            .findByIdAndUpdate(userId, user, {new: true})
+    function fetchUserByName(userName) {
+        const nameContains = new RegExp("^" + userName);
+        console.log("name: ", nameContains);
+        return UserModel.find({ name: nameContains })
+            .exec();
+    }
+    function fetchUserByEmail(userEmail) {
+        //const emailContains = new RegExp("^" + userEmail);
+        
+        return UserModel.findOne({ email: userEmail })
+            .exec();
+    }
+    function fetchUserByRole(userRole) {
+        const roleContains = new RegExp("^" + userRole);
+        console.log("name: ", roleContains);
+        return UserModel.find({ role: roleContains })
             .exec();
     }
 
-    function deleteUser(userId) {
-        return UserModel
-            .findByIdAndRemove(userId)
+    function fetchUserByState(userState) {
+        const statusContains = new RegExp("^" + userState);
+        console.log("state: ", statusContains);
+        return UserModel.find({ state: statusContains })
             .exec();
     }
+
+    function updateUser(user_Id, user) {
+        console.log("userid:", user_Id);
+        console.log("user:", user);
+        return UserModel.findByIdAndUpdate(user_Id, user, { new: true })
+            .exec();
+    }
+
+   
+    function deleteUser(user_Id) {
+        return UserModel.findByIdAndRemove(user_Id)
+            .exec();
+    }
+
+
+
+   
+
 
 })();
