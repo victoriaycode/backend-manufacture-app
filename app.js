@@ -4,12 +4,33 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var jwt = require('express-jwt');
+var jwks = require('jwks-rsa');
 
 var MongoDBUtil = require('./modules/mongodb/modules/mongodb/mongodb.module').MongoDBUtil;
 
+///Controllers
 
 var UserController = require('./modules/user/user.module')().UserController;
+var ProductController = require('./modules/product/product.module')().ProductController;
+var OrderController = require('./modules/order/order.module')().OrderController;
+var ClientController = require('./modules/client/client.module')().ClientController;
+
 var app = express();
+
+var jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: 'https://parse-manofacturer.us.auth0.com/.well-known/jwks.json'
+}),
+audience: 'api-autentication-parse-manofacturer',
+issuer: 'https://parse-manofacturer.us.auth0.com/',
+algorithms: ['RS256']
+});
+
+app.use(jwtCheck);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -17,7 +38,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 MongoDBUtil.init();
 app.use(cors());
+
+
 app.use('/users', UserController);
+app.use('/products', ProductController);
+app.use('/orders', OrderController);
+app.use('/clients', ClientController);
+
 app.get('/', function (req, res) {
   var pkg = require(path.join(__dirname, 'package.json'));
   res.json({
