@@ -23,10 +23,10 @@ var jwtCheck = jwt({
       cache: true,
       rateLimit: true,
       jwksRequestsPerMinute: 5,
-      jwksUri: 'https://parse-manofacturer.us.auth0.com/.well-known/jwks.json'
+      jwksUri: 'https://projectsvi.us.auth0.com/.well-known/jwks.json'
 }),
-audience: 'api-autentication-parse-manofacturer',
-issuer: 'https://parse-manofacturer.us.auth0.com/',
+audience: 'api-manufacturer-projectvi',
+issuer: 'https://projectsvi.us.auth0.com/',
 algorithms: ['RS256']
 });
 

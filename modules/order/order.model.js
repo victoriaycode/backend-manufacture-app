@@ -24,7 +24,7 @@
         },
         seller: {
             seller_id: {
-                type: Number,
+                type: String,
                 required: true
             },
             seller_name: {
